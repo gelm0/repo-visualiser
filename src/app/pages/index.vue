@@ -1,10 +1,16 @@
 <template>
-	<div class="container pt-5">
-    	<div class="mx-auto col-sm-8 col-md-6 hide-sm">
+    	<div class="row">
+    		<div class="col">
+    			<div class="container-full">
+    			</div>
+	 		</div>
+    		<div class="col my-auto">
+    			<div class="card border-secondary pt-5" style="max-width: 36rem;">
 	 				<login/>
-        	</div>
-    	</div>
-	</div>
+	 			</div>
+	 		</div>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -16,7 +22,6 @@ import Component from 'vue-class-component'
   components: {Login}
 })
 export default class VizualiserPage extends Vue {
-
 
 }
 </script>

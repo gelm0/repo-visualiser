@@ -1,4 +1,5 @@
-import ServiceConnector from '~/src/app/connector/ServiceConnector'
+//import { NuxtAxiosInstance } from '@nuxtjs/axios'
+import {NuxtAxiosInstance} from '@nuxtjs/axios'
 
 export default class LoginService {
 
@@ -10,14 +11,43 @@ export default class LoginService {
 	* 3. Your app accesses the API with the user's access token
 	*/
 
-	async requestGitHubIdentity(): Promise<AxiosResponse> {
-		ServiceConnector.get()
+	private oauthUrl: string = "";
+	private clientId: string = "";
+	private clientSecret: string = "";
+
+	constructor() {
+		if (process.env.CLIENT_ID !== undefined) {
+			this.clientId = process.env.CLIENT_ID;
+		}
+
+		if (process.env.API_SECRET !== undefined) {
+			this.clientSecret = process.env.API_SECRET;
+		}
+
+		if (process.env.OAUTH_URL !== undefined) {
+			this.oauthUrl = process.env.OAUTH_URL;
+		}
 	}
 
-	public login(): Promise<AxiosResponse> {
-
+	private getLoginUrlParams(code: string): string {
+		return new URLSearchParams({
+				client_id: this.clientId,
+				client_secret: this.clientSecret,
+				code: code
+		}).toString();
 	}
 
-
-
+	async requestGitHubToken(axios: NuxtAxiosInstance, code: string): Promise<any>	 {
+		if (this.oauthUrl !== undefined && this.clientId !== undefined && this.clientSecret !== undefined) {
+			console.log("TEST")
+			console.log(this.oauthUrl)
+			console.log(this.getLoginUrlParams(code));
+			const ret = await axios.get("/api/redirect-oauth?code=" + code)
+			.catch(function (error) {
+      			console.log(error.response);
+		 	});
+			console.log(ret);
+			return ret
+		}
+	}
 }

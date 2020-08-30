@@ -1,4 +1,3 @@
-
 export default {
   /*
   ** Nuxt rendering mode
@@ -16,6 +15,14 @@ export default {
   ** See https://nuxtjs.org/api/configuration-target
   */
   target: 'server',
+
+  serverMiddleware: [
+    {
+      path: 'api/redirect-oauth',
+      handler: '~/middleware/auth.js'
+    }
+  ],
+
   /*
   ** Headers of the page
   ** See https://nuxtjs.org/api/configuration-head
@@ -35,6 +42,7 @@ export default {
   ** Global CSS
   */
   css: [
+    '@/assets/css/container.css',
   ],
   /*
   ** Plugins to load before mounting the App
@@ -52,18 +60,48 @@ export default {
   */
   buildModules: [
     '@nuxt/typescript-build',
+    ['@nuxtjs/dotenv', { path: 'src/resources/' }]
+
   ],
   /*
   ** Nuxt.js modules
   */
+
+
   modules: [
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
+
+  axios: {
+    withCredentials: true,
+    proxy: true,
+  },
+
+  proxy: {
+
+   '/login/oauth/access_token': { 
+    target: 'https://github.com/login/oauth/access_token',
+    changeOrigin: true
+  } 
+},
+
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+
+    extend (config, { isDev, isClient }) {
+ 
+       config.node = {
+            fs: 'empty'
+        }
+ 
+    }
+
+
   }
 }
