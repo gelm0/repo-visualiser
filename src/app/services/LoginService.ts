@@ -38,16 +38,10 @@ export default class LoginService {
 	}
 
 	async requestGitHubToken(axios: NuxtAxiosInstance, code: string): Promise<any>	 {
-		if (this.oauthUrl !== undefined && this.clientId !== undefined && this.clientSecret !== undefined) {
-			console.log("TEST")
-			console.log(this.oauthUrl)
-			console.log(this.getLoginUrlParams(code));
-			const ret = await axios.get("/api/redirect-oauth?code=" + code)
+		const ret = await axios.get("/api/redirect-oauth?code=" + code)
 			.catch(function (error) {
       			console.log(error.response);
 		 	});
-			console.log(ret);
-			return ret
-		}
+		console.log(ret);
 	}
 }

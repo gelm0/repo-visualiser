@@ -19,10 +19,10 @@ import Component from 'vue-class-component'
 export default class Login extends Vue {
 
 	private readonly clientId: string | undefined = process.env.CLIENT_ID
-	private readonly identiyRequestUrl: string | undefined = process.env.REQUEST_CODE_URL;
+	private readonly identityRequestUrl: string | undefined = process.env.REQUEST_CODE_URL;
 
 	redirectToGithubLogin(): void {
-		window.location.href = this.identiyRequestUrl + "?client_id=" + this.clientId;
+		window.location.href = this.identityRequestUrl + "?client_id=" + this.clientId;
 	}
 	/* Set this in an env property later */
 
