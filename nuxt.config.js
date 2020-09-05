@@ -17,11 +17,11 @@ export default {
   target: 'server',
 
   serverMiddleware: [
-    {
-      path: 'api/redirect-oauth',
-      handler: '~/middleware/auth.js'
-    }
-  ],
+      {
+        path: "/api/redirect-oauth",
+        handler: "middleware/auth.js"
+      }
+],
 
   /*
   ** Headers of the page
@@ -94,14 +94,14 @@ export default {
   */
   build: {
 
+    target: "node",
+    externals: {
+        express: 'express',
+    },
     extend (config, { isDev, isClient }) {
- 
        config.node = {
             fs: 'empty'
         }
- 
     }
-
-
   }
 }

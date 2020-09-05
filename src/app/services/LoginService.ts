@@ -29,6 +29,16 @@ export default class LoginService {
 		}
 	}
 
+	private deseraliseToken(serialisedData: string): string {
+		const params = new URLSearchParams(serialisedData);
+		console.log(serialisedData)
+		const token = params.get('access_token');
+		if (token !== null && token !== undefined) {
+			return token;
+		}
+		return '';
+	}
+
 	private getLoginUrlParams(code: string): string {
 		return new URLSearchParams({
 				client_id: this.clientId,
@@ -37,11 +47,13 @@ export default class LoginService {
 		}).toString();
 	}
 
-	async requestGitHubToken(axios: NuxtAxiosInstance, code: string): Promise<any>	 {
-		const ret = await axios.get("/api/redirect-oauth?code=" + code)
-			.catch(function (error) {
-      			console.log(error.response);
-		 	});
-		console.log(ret);
+	public requestGitHubToken(axios: NuxtAxiosInstance, code: string): Promise<any>	 {
+		return axios.get("/api/redirect-oauth?" + this.getLoginUrlParams(code))
+		.then( (response) => {
+			return this.deseraliseToken(response.data);
+		})
+		.catch(function (error) {
+      		console.log(error.response);
+	 	});
 	}
 }

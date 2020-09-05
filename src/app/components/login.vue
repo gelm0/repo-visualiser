@@ -24,8 +24,6 @@ export default class Login extends Vue {
 	redirectToGithubLogin(): void {
 		window.location.href = this.identityRequestUrl + "?client_id=" + this.clientId;
 	}
-	/* Set this in an env property later */
-
 }
 
 </script>
