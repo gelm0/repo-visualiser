@@ -9,3 +9,14 @@
 	background:#c1d6c7;
 	opacity: .4;
 }
+
+
+.login-button {
+	background-color: #44a340;
+	font-weight: bold;
+	color: white;
+}
+
+.login-button:hover {
+	background-color: #3c9238;
+}
