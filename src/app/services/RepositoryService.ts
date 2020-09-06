@@ -1,4 +1,6 @@
 import {NuxtAxiosInstance} from '@nuxtjs/axios'
+import RepositoryParameters from '~/app/types/RepositoryParameters'
+
 
 export default class RepositoryService {
 
@@ -14,27 +16,28 @@ export default class RepositoryService {
 	}
 
 	private authConfig(): Object {
+		console.log(this.authToken)
 		return {headers: {Authorization: 'Bearer ' + this.authToken} };
 	}
 
 	private searchWordConfig(searchWord: string): Object {
-		return {headers: {Authorization: 'Bearer ' + this.authToken}, params: {q: searchWord} }
+		return {headers: {Authorization: 'Bearer ' + this.authToken}, params: {q: searchWord, per_page: 10} }
 	}
 
-	public getRepositoryCommitCount(axios: NuxtAxiosInstance, owner: string): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/:owner/:repo/stats/participation"), this.authConfig());
+	public getRepositoryCommitCount(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
+		return axios.get(this.UrlConstructor("/repos/" + params.owner +"/" + params.repository + "/stats/participation"), this.authConfig());
 	}	
 
-	public getRepositoryBranches(axios: NuxtAxiosInstance): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/:owner/:repo/branches"), this.authConfig());
+	public getRepositoryCommitCountHourly(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
+		return axios.get(this.UrlConstructor("/repos/"  + params.owner +"/" + params.repository + "/stats/punch_card"), this.authConfig());
 	}	
 
-	public getRepositoryViews(axios: NuxtAxiosInstance): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/:owner/:repo/traffic/views"), this.authConfig());
+	public getRepositoryViews(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
+		return axios.get(this.UrlConstructor("/repos/" + params.owner +"/" + params.repository + "/traffic/views"), this.authConfig());
 	}	
 
-	public getRepositoryForks(axios: NuxtAxiosInstance): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/:owner/:repo/forks"), this.authConfig());
+	public getRepositoryForks(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
+		return axios.get(this.UrlConstructor("/repos/" + params.owner +"/" + params.repository + "/forks"), this.authConfig());
 	}	
 
 	public searchFoRepositories(axios: NuxtAxiosInstance, searchWord: string): Promise<any>	 {

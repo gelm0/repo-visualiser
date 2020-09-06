@@ -20,8 +20,8 @@ export default class LoginService {
 			this.clientId = process.env.CLIENT_ID;
 		}
 
-		if (process.env.API_SECRET !== undefined) {
-			this.clientSecret = process.env.API_SECRET;
+		if (process.env.CLIENT_SECRET !== undefined) {
+			this.clientSecret = process.env.CLIENT_SECRET;
 		}
 
 		if (process.env.OAUTH_URL !== undefined) {
