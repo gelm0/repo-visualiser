@@ -32,14 +32,6 @@ export default class RepositoryService {
 		return axios.get(this.UrlConstructor("/repos/"  + params.owner +"/" + params.repository + "/stats/punch_card"), this.authConfig());
 	}	
 
-	public getRepositoryViews(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/" + params.owner +"/" + params.repository + "/traffic/views"), this.authConfig());
-	}	
-
-	public getRepositoryForks(axios: NuxtAxiosInstance, params: RepositoryParameters): Promise<any>	 {
-		return axios.get(this.UrlConstructor("/repos/" + params.owner +"/" + params.repository + "/forks"), this.authConfig());
-	}	
-
 	public searchFoRepositories(axios: NuxtAxiosInstance, searchWord: string): Promise<any>	 {
 		return axios.get(this.UrlConstructor("/search/repositories"), this.searchWordConfig(searchWord));
 	}	

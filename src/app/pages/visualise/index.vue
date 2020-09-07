@@ -1,5 +1,6 @@
 <template>
 <div class="container pt-5">
+	<h1>{{"Choosen repository: " + repositoryParams.owner + "/" + repositoryParams.repository }}</h1>
 	<div class="row">
 		<div class="col-md-4 mt-4">
 			<search-repo :auth-token="authToken" @repositoryParams="setRepoParams($event)"/>
@@ -20,7 +21,6 @@
 import Vue from 'vue';
 import SearchRepo from '~/app/components/SearchRepo.vue'
 import RepositoryService from '~/app/services/RepositoryService';
-import SimplifiedRepository from '~/app/types/models/SimplifiedRepository';
 import RepositoryParameters from '~/app/types/RepositoryParameters'
 import BarGraph from '~/app/components/BarGraph.vue'
 import LineGraph from '~/app/components/LineGraph.vue'
@@ -35,11 +35,11 @@ export default class VisualisePage extends Vue {
 	private authToken: string = ''
 	private updated: number = 0;
 	private repositoryParams = new RepositoryParameters("torvalds", "linux");
-	private repositoryService: RepositoryService;
-	private commitData: Object = { id: 0};
+	private repositoryService!: RepositoryService;
+	private commitData: Object = { id: 0 };
 	private hourlyCommitData: Object = { id: 0 };
 
-	mounted() {
+	created() {
 		this.authToken = this.$route.params.token;
 		this.repositoryService = new RepositoryService(this.authToken);
 		this.updateChartData();
@@ -53,6 +53,7 @@ export default class VisualisePage extends Vue {
 
 	setRepoParams(repositoryParams: RepositoryParameters) {
 		this.repositoryParams = repositoryParams;
+		this.updateChartData();
 	}
 
 	private getCommitLabels(): Array<string> {
@@ -71,17 +72,19 @@ export default class VisualisePage extends Vue {
 		return commitMap;
 	}
 
-	private constructHourlyCommitData(commitData: Array<any>): Array<any> {
+	private constructHourlyCommitData(commitData: Array<Array<number>>): Array<number> {
 		let commitMap: Map<number, number> = new Map();
 		commitMap = this.initializeCommitMap(commitMap);
 		for (let i = 0; i < commitData.length; i++) {
 			const commit = commitData[i];
 			const currentValue = commitMap.get(commit[0]);
-			commitMap.set(commit[0], currentValue + commit[2])
+			if (currentValue !== undefined) {
+				commitMap.set(commit[0], currentValue + commit[2])
+			}
 		}
 		const returnArray: Array<number> = Array.from(commitMap.values());
-		const sundayCommits = returnArray.shift();
-		returnArray.push(sundayCommits);
+		const sundayCommits: number | undefined = returnArray.shift();
+		sundayCommits !== undefined ? returnArray.push(sundayCommits) : returnArray.push(0);
 		return returnArray;
 	}
 
@@ -103,8 +106,8 @@ export default class VisualisePage extends Vue {
       	datasets: [
         	{
           	label: 'Commits per week, last year',
-          	borderColor: 'rgba(255, 56, 96, 0.5)',
-          	backgroundColor: 'rgba(255, 56, 96, 0.1)',
+          	borderColor: 'rgba(60, 146, 45, 0.5)',
+          	backgroundColor: 'rgba(68, 163, 64, 0.1)',
           	data: commits.data.all
         	}
       	]};
@@ -118,9 +121,9 @@ export default class VisualisePage extends Vue {
 		id: this.updated,
       	datasets: [
         	{
-          	label: 'Commits per day, last week',
+          	label: 'Commits per day, all time',
           	borderColor: 'rgba(255, 56, 96, 0.5)',
-          	backgroundColor: 'rgba(255, 56, 96, 0.1)',
+          	backgroundColor: 'rgba(68, 163, 64, 0.1)',
           	data: hourlyCommits
         	}
       	]};

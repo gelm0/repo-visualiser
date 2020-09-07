@@ -1,13 +1,14 @@
 <template>
 	<div class="container">
+		<label for="search-input" v-if="searchResults.length> 0"><p>{{ "Showing top " + searchResults.length + " results" }}</p></label>
 		<div class="input-group">
-  		<input type="text" v-model="searchWord" class="form-control" placeholder="Github Repository" aria-label="Github Repository">
+  		<input id="search-input" type="text" v-model="searchWord" class="form-control" placeholder="Github Repository" aria-label="Github Repository">
   		<div class="input-group-append">
     	<button class="btn btn-outline-secondary" type="button" @click="search">Search</button>
   	</div>
 	</div>
 	<b-list-group v-if="searchResults.length> 0">
-  		<b-list-group-item button v-for="result in searchResults" :key="result.id" @click="chooseRepository(result.name, result.owner.login)"> 
+  		<b-list-group-item button v-for="result in searchResults" :key="result.id" @click="chooseRepository(result.owner.login, result.name)"> 
 			<div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">{{ result.owner.login + "/" + result.name }}</h5>
     </div>
@@ -37,11 +38,12 @@ import RepositoryParameters from '~/app/types/RepositoryParameters'
 export default class SearchRepo extends Vue {
 
 	@Prop({type: String, default: '', required: true}) authToken!: string;
-	private repositoryService: RepositoryService;
+	private repositoryService!: RepositoryService;
 	private searchWord: string = '';
 	private searchResults: Array<any> = []
 
 	mounted() {
+		console.log(this.authToken)
 		this.repositoryService = new RepositoryService(this.authToken);
 	}
 
@@ -55,8 +57,10 @@ export default class SearchRepo extends Vue {
 
 	}
 
-	chooseRepository(repoName: string, repoOwner: string) {
-		this.$emit("repositoryParams", new RepositoryParameters(repoName, repoOwner));
+	chooseRepository(repoOwner: string, repoName: string) {
+		console.log(repoOwner);
+		console.log(repoName);
+		this.$emit("repositoryParams", new RepositoryParameters(repoOwner, repoName));
 	}
 
 }
