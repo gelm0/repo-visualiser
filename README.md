@@ -16,7 +16,7 @@ When you get to step 5, please enter the following information in the input fiel
 
 ![N|Solid](https://i.ibb.co/5kDDsrq/imagesettings.png)
 
-Then clone the Github repository. In ~/src create a folder called resources. In resource you create a file called ".env".
+Then clone the Github repository. In ~/src create a folder called resources. In ~/src/resources you create a file called ".env".
 
 The following contents need to be supplied in .env file.
 
