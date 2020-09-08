@@ -1,5 +1,5 @@
 ### Introduction
-Visualise is a small [https://nuxtjs.org/](https://nuxtjs.org/) application built with typescript that can be used to visualise commit statistics of repositores.
+Visualise is a small [Nuxt.js](https://nuxtjs.org/) application built with typescript that can be used to visualise commit statistics of repositores.
 Visualise has been built and tested on the following environment.
 * Windows 10
 * Node.js v14.8.0
