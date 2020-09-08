@@ -37,3 +37,16 @@ $ npm run dev
 
 The application will be available at http://localhost:3000
 
+### Further development
+
+The application structure looks like a typical Nuxt.js structure with some exceptions.
+
+* ~/src/app - Contains all Vue/Typescript related code.
+* ~/src/app/pages - Contains the application structure and it's pages.
+* ~/src/app/components - Contains the page components
+* ~/src/app/services - Contains the service layer used for communicating with the Github API.
+* ~/src/app/types - Contains any extra Typescript classes used in the project.
+
+The project also contains an auth.js hidden under ~/src/middleware. This is due to the fact that there is an issue with communicating with the Github authorization layer while running it client side. We thus need to run this API call on the server side in order to authorize properly. You can read more about what is causing it [here](https://github.com/isaacs/github/issues/330) and [here](https://andreybleme.com/2018-02-24/oauth-github-web-flow-cors-problem/).
+
+
